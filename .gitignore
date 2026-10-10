@@ -1,0 +1,52 @@
+# Python environments and generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local credentials and environment settings
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.ssh/
+.aws/
+.netrc
+.pypirc
+credentials.json
+secrets.json
+
+# Downloaded dense features and generated training artifacts
+data/*.npy
+outputs/
+*.pt
+*.pth
+*.ckpt
+*.pkl
+*.pickle
+*.log
+wandb/
+runs/
+
+# Editor, operating-system, and archive metadata
+.DS_Store
+._*
+__MACOSX/
+.idea/
+.vscode/
+*.swp
+*.swo
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+
