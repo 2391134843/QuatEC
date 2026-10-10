@@ -24,7 +24,6 @@ proteins and 4,963 EC labels.
 ### Download and prepare
 
 1. Download the graph release from [Zenodo](https://zenodo.org/records/18813316).
-   If access is restricted, follow the upstream authors' access instructions.
 2. Keep the graphs, labels, mappings, and splits already included in `data/`.
    The only missing input is `feats.npy`: a `(29531, 1280)` float32 matrix of
    ESM-2 embeddings, approximately 144 MiB.
