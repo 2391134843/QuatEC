@@ -25,9 +25,7 @@ The five split files are disjoint and cover all 29,531 nodes. Each TSV has
 three columns: `Entry`, `EC number`, and `Sequence`. The loader resolves
 identifiers from the first column through `entry2index.json`.
 
-`labels.npz` stores the binary label matrix sparsely in float32. It replaces
-the original release's dense label file; this is a storage-format change,
-not a claim of byte-for-byte identity with a differently typed dense array.
+`labels.npz` stores binary multi-hot labels as a float32 sparse matrix.
 The training loader converts it to a dense float32 tensor in memory.
 
 ## Required external file: node features
@@ -35,9 +33,9 @@ The training loader converts it to a dense float32 tensor in memory.
 `features.npy` is **not included**. The expected input is a `(29531, 1280)`
 float32 matrix of ESM-2 sequence embeddings, approximately 144 MiB.
 
-1. Follow the dataset instructions in the
-   [PoinnCARE repository](https://github.com/kkkkk001/PoinnCARE#readme) to obtain
-   the original graph release and its `feats.npy` matrix.
+1. Download the PoinnCARE graph release from
+   [Zenodo](https://zenodo.org/records/18813316). It contains the original
+   `feats.npy` matrix.
 2. Place that matrix in this directory as `features.npy`, or retain its name
    and pass `--features-file feats.npy` to `train.py`.
 3. Preserve node order: row `i` must describe the protein whose
@@ -50,21 +48,6 @@ Example using the upstream filename:
 # Run from the repository root after placing feats.npy in data/.
 bash run.sh S --features-file feats.npy --repeats 3
 ```
-
-The upstream record is [Zenodo 18813316](https://zenodo.org/records/18813316).
-Anonymous access to that record was not verified during release preparation.
-If access is restricted, obtain it through the upstream authors' approved
-access route. Do not add private access tokens or signed download URLs to
-this repository.
-
-An independently regenerated matrix can be used for new experiments, but
-matching its dimensions is not enough to reproduce the original features.
-Use the same ESM-2 checkpoint, representation layer, sequence preprocessing,
-truncation, residue pooling, and node order. These extraction details are not
-fully specified by this code package, so regenerated embeddings should not
-be presented as an exact replacement without checking them against the
-original matrix. See [ESM-2](https://github.com/facebookresearch/esm) for the
-embedding tools.
 
 ## Data processing
 
@@ -134,22 +117,11 @@ bash run.sh S --data-dir /path/to/graph-data --features-file feats.npy
 
 The default names for labels, graphs, mappings, and splits are listed above.
 Use the corresponding options from `python train.py --help` if they differ.
-All paths relative to `--data-dir` must refer to files from the same node
-indexing and EC vocabulary; a matching matrix shape alone does not establish
-that the rows are correctly aligned.
+Paths set by these options are resolved relative to `--data-dir`. Use the
+same node indexing and EC vocabulary for all input files.
 
 ## Supported formats
 
 Features and labels accept dense numeric `.npy` files or SciPy sparse `.npz`
-files. Graphs use SciPy sparse `.npz`; mappings use JSON objects. Object-array
-and pickle deserialization are disabled. File names can be changed through
-the command-line options in `python train.py --help`.
-
-## Attribution and terms
-
-Please acknowledge both PoinnCARE's graph preparation and CARE's benchmark
-and splits. The inclusion of these files does not transfer their ownership
-or replace upstream data-use terms. PoinnCARE publishes its project under
-CC BY-NC 4.0; CARE's repository carries an MIT license. A separate license
-for the specific Zenodo graph record has not been verified here. See
-[the third-party notices](../THIRD_PARTY_NOTICES.txt) before redistribution.
+files. Graphs use SciPy sparse `.npz`; mappings use JSON objects. File names
+can be changed through the command-line options in `python train.py --help`.
